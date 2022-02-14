@@ -3,13 +3,12 @@ import { Game } from "../Game";
 
 export class Cell extends Container {
     public onClick: Function;
-    //public cell_index: number;
+    private indexCell: number;
 
-    constructor(index) {
+    constructor(index: number) {
         super();
         const graphics = new PIXI.Graphics();
-        
-        // Rectangle
+        this.indexCell = index;
 
         // TODO: contour, disable cell on click
         graphics.lineStyle(2, 0xFFE890, 1);
@@ -20,22 +19,18 @@ export class Cell extends Container {
         graphics.on("pointerdown", () => {
             console.log("Click on cell");
 
-            let turnNumber: number = Game.getTurnNumber();
-            console.log(typeof(turnNumber));
-            const basicText = new PIXI.Text(turnNumber % 2 === 1 ? 'X' : 'O', {fontSize: 100,});
-            Game.setGridPositions(index, turnNumber % 2 === 1 ? 'X' : 'O');
-            basicText.x = 0;
-            basicText.y = 0;
-            this.addChild(basicText);
-            Game.setTurnNumber();
-
-            this.onClick.call(this);
+            this.onClick.call(this, this.indexCell);
             graphics.interactive = false;
+            
         })
         this.addChild(graphics);
     }
 
-    setCellDetails() {
+    setCellDetails(contentCell:string) {
         console.log("Details from cell");
+        const basicText = new PIXI.Text(contentCell, {fontSize: 100,});
+            basicText.x = (this.width - basicText.width)/2.5;
+            basicText.y = 0;
+            this.addChild(basicText);
     }
 }
