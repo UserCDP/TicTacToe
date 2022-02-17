@@ -1,5 +1,4 @@
 import { Container } from "pixi.js";
-import { Game } from "../Game";
 import { Cell } from "./Cell";
 
 export class Grid extends Container {
@@ -14,11 +13,7 @@ export class Grid extends Container {
             this.cell.x = (i % 3) * 100;
             this.cell.y = Math.floor(i / 3) * 100;
             this.cell.onClick = (indexCell) => {
-                console.log("Closure from grid");
-
-
                 this.userMove.call(this, indexCell);
-                //Game.thereIsWinner();
             }
             this.addChild(this.cell);
             this.cells.push(this.cell);
@@ -27,6 +22,5 @@ export class Grid extends Container {
 
     public setCellContent(cellID:number, contentCell:string) {
         this.cells[cellID].setCellDetails(contentCell);
-        console.log("Set cell content from grid")
     }
 }

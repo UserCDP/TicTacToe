@@ -49,25 +49,14 @@ export class Game {
 
     private isGameFinished(currentMoveContent:string):boolean {
         if (this.isPlayerWin(currentMoveContent) || this.isTie()) {
+            this.createRestartButton();
+            this.createFinishMessage(this.isTie() ? "Game finished! Tie!" : "Game finished! Winner " + currentMoveContent + "!");
             return true;
         }
         return false;
     }
     private isTie():boolean {
         if (!this.results.includes('')) {
-            console.log("Game finished! Tie");
-            const basicText = new PIXI.Text('Game finished!');
-            basicText.x = 500;
-            basicText.y = 100;
-            this.app.stage.addChild(basicText);
-
-            const restartText = new PIXI.Text('Restart game');
-            restartText.x = 500;
-            restartText.y = 150;
-            restartText.interactive = true;
-            restartText.buttonMode = true;
-            restartText.on('pointerdown', this.restartGame);
-            this.app.stage.addChild(restartText);
             return true;
         }
         return false;
@@ -78,30 +67,27 @@ export class Game {
             if (this.results[item[0]] === currentMoveContent &&
                 this.results[item[1]] === currentMoveContent &&
                 this.results[item[2]] === currentMoveContent) {
-                    console.log("Win " + currentMoveContent);
-                    console.log("Game finished! Winner: " + currentMoveContent + "!");
-                    const basicText = new PIXI.Text('Game finished! Winner ' + currentMoveContent + "!");
-                    basicText.x = 500;
-                    basicText.y = 100;
-                    this.app.stage.addChild(basicText);
-
-                    const restartText = new PIXI.Text('Restart game');
-                    restartText.x = 500;
-                    restartText.y = 150;
-                    restartText.interactive = true;
-                    restartText.buttonMode = true;
-                    restartText.on('pointerdown', this.restartGame);
-                    this.app.stage.addChild(restartText);
                     return true;
             }
             return acc;
         }, false);;
     }
 
-    private restartGame():void {
-        this.results = ["", "", "", "", "", "", "", "", ""];
-        this.nextMoveContent = true;
-        location.reload();
+    private createRestartButton():void {
+        const restartText = new PIXI.Text('Restart game');
+        restartText.x = 500;
+        restartText.y = 150;
+        restartText.interactive = true;
+        restartText.buttonMode = true;
+        restartText.on('pointerdown', () => {location.reload()});
+        this.app.stage.addChild(restartText);
+    }
+
+    private createFinishMessage(text:string):void {
+        const basicText = new PIXI.Text(text);
+        basicText.x = 500;
+        basicText.y = 100;
+        this.app.stage.addChild(basicText);
     }
 
 }

@@ -1,36 +1,35 @@
-import { Container } from "pixi.js";
-import { Game } from "../Game";
+import { Container, Graphics } from "pixi.js";
 
 export class Cell extends Container {
     public onClick: Function;
     private indexCell: number;
-
+    private graphics:Graphics;
     constructor(index: number) {
         super();
-        const graphics = new PIXI.Graphics();
         this.indexCell = index;
-
-        // TODO: contour, disable cell on click
-        graphics.lineStyle(2, 0xFFE890, 1);
-        graphics.beginFill(0x777777);  // 0x881748 - pink/X     e6dd07 - yellow/O
-        graphics.drawRect(0, 0, 100, 100);
-        graphics.endFill();
-        graphics.interactive = true;
-        graphics.on("pointerdown", () => {
-            console.log("Click on cell");
-
-            this.onClick.call(this, this.indexCell);
-            graphics.interactive = false;
-            
-        })
-        this.addChild(graphics);
+        this.createCellGraphics();
     }
 
-    setCellDetails(contentCell:string) {
-        console.log("Details from cell");
+    public setCellDetails(contentCell:string) {
         const basicText = new PIXI.Text(contentCell, {fontSize: 100,});
             basicText.x = (this.width - basicText.width)/2.5;
             basicText.y = 0;
             this.addChild(basicText);
+    }
+
+    private createCellGraphics():void {
+        this.graphics = new PIXI.Graphics();
+        this.graphics.lineStyle(2, 0xFFE890, 1);
+        this.graphics.beginFill(0x777777);
+        this.graphics.drawRect(0, 0, 100, 100);
+        this.graphics.endFill();
+        this.graphics.interactive = true;
+        this.graphics.on("pointerdown", () => {
+
+            this.onClick.call(this, this.indexCell);
+            this.graphics.interactive = false;
+            
+        })
+        this.addChild(this.graphics);
     }
 }
