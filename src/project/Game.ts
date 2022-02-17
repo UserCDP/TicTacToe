@@ -60,6 +60,14 @@ export class Game {
             basicText.x = 500;
             basicText.y = 100;
             this.app.stage.addChild(basicText);
+
+            const restartText = new PIXI.Text('Restart game');
+            restartText.x = 500;
+            restartText.y = 150;
+            restartText.interactive = true;
+            restartText.buttonMode = true;
+            restartText.on('pointerdown', this.restartGame);
+            this.app.stage.addChild(restartText);
             return true;
         }
         return false;
@@ -72,14 +80,28 @@ export class Game {
                 this.results[item[2]] === currentMoveContent) {
                     console.log("Win " + currentMoveContent);
                     console.log("Game finished! Winner: " + currentMoveContent + "!");
-                    const basicText = new PIXI.Text('Game finished!');
+                    const basicText = new PIXI.Text('Game finished! Winner ' + currentMoveContent + "!");
                     basicText.x = 500;
                     basicText.y = 100;
                     this.app.stage.addChild(basicText);
+
+                    const restartText = new PIXI.Text('Restart game');
+                    restartText.x = 500;
+                    restartText.y = 150;
+                    restartText.interactive = true;
+                    restartText.buttonMode = true;
+                    restartText.on('pointerdown', this.restartGame);
+                    this.app.stage.addChild(restartText);
                     return true;
             }
             return acc;
         }, false);;
+    }
+
+    private restartGame():void {
+        this.results = ["", "", "", "", "", "", "", "", ""];
+        this.nextMoveContent = true;
+        location.reload();
     }
 
 }
